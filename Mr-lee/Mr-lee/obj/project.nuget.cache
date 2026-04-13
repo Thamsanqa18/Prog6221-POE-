@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "dgSpecHash": "JztmxB0uVF0=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\vboxuser\\source\\repos\\Mr-lee\\Mr-lee\\Mr-lee.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\vboxuser\\.nuget\\packages\\speechlib.models\\1.6.0\\speechlib.models.1.6.0.nupkg.sha512",
+    "C:\\Users\\vboxuser\\.nuget\\packages\\speechlib.synthesis\\1.6.0\\speechlib.synthesis.1.6.0.nupkg.sha512",
+    "C:\\Users\\vboxuser\\.nuget\\packages\\system.speech\\10.0.5\\system.speech.10.0.5.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "message": "Package 'SpeechLib.Models 1.6.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net10.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Users\\vboxuser\\source\\repos\\Mr-lee\\Mr-lee\\Mr-lee.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\vboxuser\\source\\repos\\Mr-lee\\Mr-lee\\Mr-lee.csproj",
+      "libraryId": "SpeechLib.Models",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "message": "Package 'SpeechLib.Synthesis 1.6.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net10.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Users\\vboxuser\\source\\repos\\Mr-lee\\Mr-lee\\Mr-lee.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\vboxuser\\source\\repos\\Mr-lee\\Mr-lee\\Mr-lee.csproj",
+      "libraryId": "SpeechLib.Synthesis",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
+}

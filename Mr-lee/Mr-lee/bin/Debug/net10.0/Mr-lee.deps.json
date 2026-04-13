@@ -1,0 +1,84 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "Mr-lee/1.0.0": {
+        "dependencies": {
+          "SpeechLib.Models": "1.6.0",
+          "SpeechLib.Synthesis": "1.6.0",
+          "System.Speech": "10.0.5"
+        },
+        "runtime": {
+          "Mr-lee.dll": {}
+        }
+      },
+      "SpeechLib.Models/1.6.0": {
+        "runtime": {
+          "lib/net40/SpeechLib.Models.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SpeechLib.Synthesis/1.6.0": {
+        "dependencies": {
+          "SpeechLib.Models": "1.6.0"
+        },
+        "runtime": {
+          "lib/net40/SpeechLib.Synthesis.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "System.Speech/10.0.5": {
+        "runtime": {
+          "lib/net10.0/System.Speech.dll": {
+            "assemblyVersion": "10.0.0.5",
+            "fileVersion": "10.0.526.15411"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net10.0/System.Speech.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "10.0.0.5",
+            "fileVersion": "10.0.526.15411"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Mr-lee/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SpeechLib.Models/1.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7KLZBSd2TolAD9iB+3Houwqs1GwMZgDz52f+y54jxianl2fMxaC9Ovo8TFBiGfAirRH60aSwBhjDX5gT1KukcQ==",
+      "path": "speechlib.models/1.6.0",
+      "hashPath": "speechlib.models.1.6.0.nupkg.sha512"
+    },
+    "SpeechLib.Synthesis/1.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nHhHR4rjQJbG77G7w1AbxJxZkicw38eNrRipi9xt+K1pCWp0cYOo9QRckMl8k+1yIBdx84SUbmFZ9bIEoEwXXw==",
+      "path": "speechlib.synthesis/1.6.0",
+      "hashPath": "speechlib.synthesis.1.6.0.nupkg.sha512"
+    },
+    "System.Speech/10.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MYkGiMGWYc9rhyvsmf2UGIHD4RVJ3+uNgllFPP1YW6ILJJDXpDN8jMcy++0E/KrG507kTPCo5EOW4tEwUOCKhQ==",
+      "path": "system.speech/10.0.5",
+      "hashPath": "system.speech.10.0.5.nupkg.sha512"
+    }
+  }
+}
