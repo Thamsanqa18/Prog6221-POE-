@@ -1,48 +1,42 @@
 using System;
 using System.IO;
-using System.Threading;
 
 public static class ConsoleUI
 {
     public static void DisplayLogo()
     {
-        Console.ForegroundColor = ConsoleColor.Green;
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        
+        // Assembles the path to the text file managed within your folder directory structure
+        string asciiArtPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "ascii-art.txt");
 
-        if (File.Exists("ascii-art.txt"))
+        try
         {
-            string logo = File.ReadAllText("ascii-art.txt");
-            Console.WriteLine(logo);
+            if (File.Exists(asciiArtPath))
+            {
+                string logo = File.ReadAllText(asciiArtPath);
+                Console.WriteLine(logo);
+            }
+            else
+            {
+                // Fallback banner if file replication isn't fully synchronized on runtime initialization
+                Console.WriteLine(@"==================================================");
+                Console.WriteLine(@"               MR LEE SECURITY BOT                ");
+                Console.WriteLine(@"==================================================");
+            }
         }
-        else
+        catch (Exception)
         {
-            Console.WriteLine("Logo file not found.");
+            Console.WriteLine("[Mr Lee Bot - Cybersecurity Awareness]");
         }
-
+        
         Console.ResetColor();
     }
 
-    public static void BotSay(string message)
+    public static void BotSay(string text)
     {
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.Write("Mr Lee Bot : ");
-
-        foreach (char c in message)
-        {
-            Console.Write(c);
-            Thread.Sleep(20);
-        }
-
-        Console.WriteLine();
+        Console.WriteLine($"\n[Mr Lee Bot]: {text}");
         Console.ResetColor();
-    }
-
-    public static string GetUserInput(string name)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write(name + ": ");
-        string input = Console.ReadLine();
-        Console.ResetColor();
-
-        return input;
     }
 }

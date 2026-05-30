@@ -1,75 +1,147 @@
 using System;
+using System.Collections.Generic;
 
 public class ResponsesService
 {
-    private Random rand = new Random();
+    private readonly Dictionary<string, List<string>> _topicResponses;
+    private readonly Random _random = new Random();
 
-    private string[] greetings = {
-        "Hello! I'm running perfectly and ready to help you stay secure online.",
-        "All systems operational! How can I help you stay safe online?",
-        "I'm doing great! Ready to assist with cybersecurity tips."
-    };
-
-    private string[] unknownResponses = {
-        "Sorry, I didn't quite understand that. Could you rephrase?",
-        "I'm not sure I follow. Try asking in a different way.",
-        "Hmm, I didn't get that. Can you clarify?"
-    };
-
-    private string[] emptyResponses = {
-        "You entered nothing. Please type a question.",
-        "Oops! That was empty. Try asking something.",
-        "Please type something so I can help you."
-    };
-
-    private string[] passwordAdvice = {
-        "Use strong passwords with at least 12 characters and enable 2FA.",
-        "Avoid personal info and always use unique passwords.",
-        "Use a mix of letters, numbers, and symbols."
-    };
-
-    public void RunChat(string name)
+    public ResponsesService()
     {
-        string input = "";
-
-        while (input != "exit" && input != "bye")
+        // Using optimized Dictionary setup to house multi-response arrays per topic keyword
+        _topicResponses = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase)
         {
-            input = ConsoleUI.GetUserInput(name)?.ToLower();
-
-            if (string.IsNullOrWhiteSpace(input))
             {
-                Respond(GetRandom(emptyResponses));
+                "password", new List<string>
+                {
+                    "Make sure to use strong, unique passwords for each account. Avoid using personal details!",
+                    "Consider using a password manager to keep your credentials safe and complex.",
+                    "Always enable Two-Factor Authentication (2FA) alongside a strong password."
+                }
+            },
+            {
+                "scam", new List<string>
+                {
+                    "If an offer looks too good to be true, it probably is. Never transfer money to unknown sources.",
+                    "Scammers often create a false sense of urgency. Take your time to verify their claims.",
+                    "Be skeptical of unsolicited calls, texts, or social media messages requesting financial help."
+                }
+            },
+            {
+                "phishing", new List<string>
+                {
+                    "Be cautious of emails asking for personal information. Scammers often disguise themselves as trusted organisations.",
+                    "Always check the sender's actual email address before clicking any links or downloading attachments.",
+                    "Look out for generic greetings like 'Dear Customer' and urgent calls to action in suspicious emails."
+                }
+            },
+            {
+                "privacy", new List<string>
+                {
+                    "Regularly review the privacy settings on your social media accounts to control who sees your data.",
+                    "Avoid sharing sensitive information like your location or phone number publicly online.",
+                    "Be mindful of app permissions; don't give apps access to your contacts or camera unless necessary."
+                }
+            }
+        };
+    }
+
+    public void RunChat(UserProfile user)
+    {
+        bool keepRunning = true;
+
+        while (keepRunning)
+        {
+            Console.Write($"\n[{user.Name}] > ");
+            string userInput = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrEmpty(userInput)) continue;
+
+            // Check for explicit session termination commands
+            if (userInput.Equals("exit", StringComparison.OrdinalIgnoreCase) || 
+                userInput.Equals("bye", StringComparison.OrdinalIgnoreCase))
+            {
+                ConsoleUI.BotSay("Stay safe out there! Goodbye.");
+                AudioPlayer.Speak("Goodbye.");
+                keepRunning = false;
                 continue;
             }
 
-            if (input.Contains("how are you"))
+            // 1. Evaluate User Sentiment Triggers
+            string sentimentResponse = DetectAndRespondToSentiment(userInput);
+            if (!string.IsNullOrEmpty(sentimentResponse))
             {
-                Respond(GetRandom(greetings));
+                ConsoleUI.BotSay(sentimentResponse);
+                AudioPlayer.Speak(sentimentResponse);
             }
-            else if (input.Contains("password"))
+
+            // 2. Process Topic Keywords Mapping
+            bool keywordFound = false;
+            foreach (var topic in _topicResponses.Keys)
             {
-                Respond(GetRandom(passwordAdvice));
+                if (userInput.Contains(topic, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Memory Context Storage
+                    if (string.IsNullOrEmpty(user.FavoriteTopic))
+                    {
+                        user.FavoriteTopic = topic;
+                        string memoryAck = $"Great! I'll remember that you're interested in {topic}. It's a crucial part of staying safe online.";
+                        ConsoleUI.BotSay(memoryAck);
+                        AudioPlayer.Speak(memoryAck);
+                    }
+
+                    // Select and fetch a randomized response item from the target array collection
+                    string tip = GetRandomResponse(topic);
+                    ConsoleUI.BotSay(tip);
+                    AudioPlayer.Speak(tip);
+                    keywordFound = true;
+                    break;
+                }
             }
-            else if (input == "exit" || input == "bye")
+
+            // 3. Conditional Memory Context Recall
+            if (keywordFound && !string.IsNullOrEmpty(user.FavoriteTopic) && _random.Next(0, 2) == 1)
             {
-                Respond($"Goodbye {name}! Stay safe online.");
-                break;
+                string recallMessage = $"As someone interested in {user.FavoriteTopic}, you might also want to stay updated on related safety definitions.";
+                ConsoleUI.BotSay(recallMessage);
+                AudioPlayer.Speak(recallMessage);
             }
-            else
+
+            // 4. Default Fallback Processing Edge Case
+            if (!keywordFound && string.IsNullOrEmpty(sentimentResponse))
             {
-                Respond(GetRandom(unknownResponses));
+                string fallback = "I'm not sure I understand. Can you try rephrasing? Ask me about passwords, scams, phishing, or privacy.";
+                ConsoleUI.BotSay(fallback);
+                AudioPlayer.Speak(fallback);
             }
         }
     }
 
-    private void Respond(string message)
+    private string GetRandomResponse(string topic)
     {
-        ConsoleUI.BotSay(message);
-        AudioPlayer.Speak(message);
+        List<string> responses = _topicResponses[topic];
+        int index = _random.Next(responses.Count);
+        return responses[index];
     }
 
-    private string GetRandom(string[] arr)
+    private string DetectAndRespondToSentiment(string input)
     {
-        return arr[rand.Next(arr.Length)];
+        if (input.Contains("worried", StringComparison.OrdinalIgnoreCase) || 
+            input.Contains("scared", StringComparison.OrdinalIgnoreCase) || 
+            input.Contains("afraid", StringComparison.OrdinalIgnoreCase))
+        {
+            return "It's completely understandable to feel that way. Scams can be very convincing. Let me share some tips to help you stay safe.";
+        }
+        if (input.Contains("curious", StringComparison.OrdinalIgnoreCase) || 
+            input.Contains("learn", StringComparison.OrdinalIgnoreCase))
+        {
+            return "It's fantastic that you are curious about tech safety! Knowledge is your best defence.";
+        }
+        if (input.Contains("frustrated", StringComparison.OrdinalIgnoreCase) || 
+            input.Contains("annoyed", StringComparison.OrdinalIgnoreCase))
+        {
+            return "Cybersecurity rules can feel overwhelming and frustrating, but taking minor steps protects your entire identity.";
+        }
+        return null;
     }
 }
